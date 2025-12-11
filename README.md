@@ -1,11 +1,12 @@
 # react-binjo
 
-A customizable bingo-style progress board component for React. Track your goals visually with a 5x5 grid that shows completion progress via pie charts.
+A customizable bingo-style progress board and prize wheel component for React. Track your goals visually with a 5x5 grid or spin a wheel of options.
 
 ![React Binjo Board](https://via.placeholder.com/600x400?text=BINJO+Board+Preview)
 
 ## Features
 
+### BinjoBoard
 - 5x5 bingo grid displaying 25 goals
 - Pie charts showing progress on hover
 - Star indicator for completed items (100%)
@@ -15,6 +16,15 @@ A customizable bingo-style progress board component for React. Track your goals 
 - Fully customizable colors and styling
 - Responsive design (mobile + desktop)
 - Special header display when title is exactly 5 characters
+
+### WOW (Wheel of Wonder)
+- Interactive spinning prize wheel
+- Customizable segment colors and text
+- Confetti animation on spin completion
+- Custom pointer styles with rotation control
+- Mobile-responsive design
+- Callbacks for spin start and end events
+- Flexible option configuration
 
 ## Installation
 
@@ -222,6 +232,162 @@ When the title is exactly 5 characters, each letter appears above its column.
 
 ---
 
+## WOW Component (Wheel of Wonder)
+
+An interactive spinning prize wheel component perfect for games, raffles, or decision-making.
+
+### Basic Usage
+
+```tsx
+import { WOW } from 'react-binjo';
+
+function App() {
+  const options = ['Prize 1', 'Prize 2', 'Prize 3', 'Prize 4', 'Prize 5'];
+  
+  return (
+    <WOW
+      options={options}
+      onSpinEnd={(prizeIndex, prizeLabel) => {
+        console.log(`Won: ${prizeLabel} at index ${prizeIndex}`);
+      }}
+    />
+  );
+}
+```
+
+### WOW Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `options` | `string[] \| WOWOption[]` | **required** | Array of options/prizes to display |
+| `title` | `string` | `"Spin the Prize Wheel!"` | Title above the wheel |
+| `showTitle` | `boolean` | `true` | Whether to show the title |
+| `colors` | `WOWColors` | see below | Custom color scheme |
+| `border` | `WOWBorderConfig` | see below | Border configuration |
+| `pointer` | `WOWPointerConfig` | see below | Pointer configuration |
+| `confetti` | `boolean \| WOWConfettiConfig` | `true` | Confetti settings or disable |
+| `spinDuration` | `number` | `1` | Spin duration in seconds |
+| `fontSize` | `number` | `14` | Font size for labels |
+| `fontFamily` | `string` | `"monospace"` | Font family for labels |
+| `fontWeight` | `number` | `700` | Font weight for labels |
+| `onSpinStart` | `(index: number) => void` | - | Callback when spin starts |
+| `onSpinEnd` | `(index: number, label: string) => void` | - | Callback when spin ends |
+| `className` | `string` | - | Additional CSS class |
+| `mobileBreakpoint` | `number` | `768` | Breakpoint for mobile view |
+
+### WOWOption
+
+```ts
+interface WOWOption {
+  label: string;
+  backgroundColor?: string;
+  textColor?: string;
+}
+```
+
+### WOWColors
+
+```ts
+interface WOWColors {
+  segmentColors?: string[];  // Array of colors to alternate (default: ["#4cbba4", "#88be74"])
+  text?: string;             // Text color (default: "#ffffff")
+  outerBorder?: string;      // Outer border color (default: "#ffffff")
+}
+```
+
+### WOWBorderConfig
+
+```ts
+interface WOWBorderConfig {
+  outerBorderWidth?: number;   // Width of outer border (default: 5)
+  radiusLineWidth?: number;    // Width of radius lines (default: 0)
+  radiusLineColor?: string;    // Color of radius lines (default: "#ffffff")
+}
+```
+
+### WOWPointerConfig
+
+```ts
+interface WOWPointerConfig {
+  rotation?: number;      // Rotation angle in degrees (default: 310)
+  width?: number;         // Pointer width on desktop (default: 90)
+  mobileWidth?: number;   // Pointer width on mobile (default: 60)
+  color?: string;         // Pointer color/shadow (default: "#000000")
+  src?: string;           // Custom pointer image URL
+}
+```
+
+### WOWConfettiConfig
+
+```ts
+interface WOWConfettiConfig {
+  enabled?: boolean;           // Enable/disable confetti (default: true)
+  numberOfPieces?: number;     // Number of pieces (default: 2000)
+  gravity?: number;            // Gravity strength (default: 0.5)
+  initialVelocityY?: number;   // Initial upward velocity (default: 50)
+  recycle?: boolean;           // Recycle confetti (default: false)
+}
+```
+
+### Examples
+
+#### Custom Colors
+
+```tsx
+<WOW
+  options={['Red', 'Blue', 'Green', 'Yellow']}
+  colors={{
+    segmentColors: ['#ef4444', '#3b82f6', '#10b981', '#fbbf24'],
+    text: '#ffffff',
+    outerBorder: '#000000',
+  }}
+/>
+```
+
+#### Advanced Options with Custom Styling
+
+```tsx
+const options = [
+  { label: 'Grand Prize', backgroundColor: '#ffd700', textColor: '#000000' },
+  { label: 'Second Place', backgroundColor: '#c0c0c0', textColor: '#000000' },
+  { label: 'Third Place', backgroundColor: '#cd7f32', textColor: '#ffffff' },
+  'Try Again',
+  'Bonus Points',
+];
+
+<WOW options={options} />
+```
+
+#### Custom Pointer and No Confetti
+
+```tsx
+<WOW
+  options={['A', 'B', 'C', 'D']}
+  pointer={{
+    src: '/custom-arrow.png',
+    rotation: 270,
+    width: 100,
+  }}
+  confetti={false}
+/>
+```
+
+#### With Event Handlers
+
+```tsx
+<WOW
+  options={['Option 1', 'Option 2', 'Option 3']}
+  onSpinStart={(index) => {
+    console.log('Starting to spin...');
+  }}
+  onSpinEnd={(index, label) => {
+    alert(`You won: ${label}!`);
+  }}
+/>
+```
+
+---
+
 ## Utilities
 
 ### `parseBinjoCsv(csvString: string): BinjoItem[]`
@@ -256,12 +422,22 @@ const csv = generateCsvTemplate([
 
 The package exports:
 
-- `BinjoBoard` - Main component
+### Components
+- `BinjoBoard` - Main bingo board component
+- `WOW` - Prize wheel component
 - `PieChart` - Standalone pie chart component
 - `Tooltip` - Tooltip component
+
+### Utilities
 - `parseBinjoCsv` - CSV parser utility
 - `generateCsvTemplate` - CSV template generator
-- Types: `BinjoItem`, `BinjoColors`, `BinjoFonts`, `BinjoBoardProps`, `CsvRow`
+- `externalTooltipHandler` - External tooltip handler
+- `getOrCreateTooltip` - Tooltip utility
+- `TOOLTIP_STYLES` - Tooltip style constants
+
+### Types
+- `BinjoItem`, `BinjoColors`, `BinjoFonts`, `BinjoBoardProps`, `CsvRow`
+- `WOWProps`, `WOWOption`, `WOWColors`, `WOWBorderConfig`, `WOWPointerConfig`, `WOWConfettiConfig`
 
 ---
 
@@ -272,6 +448,8 @@ This package includes these dependencies (bundled):
 - `styled-components` - Styling
 - `chart.js` + `react-chartjs-2` - Pie charts
 - `papaparse` - CSV parsing
+- `react-custom-roulette` - Wheel component
+- `react-confetti` - Confetti animations
 
 ## Peer Dependencies
 
