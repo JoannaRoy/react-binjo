@@ -1,0 +1,70 @@
+{
+  "name": "react-binjo",
+  "version": "1.0.2",
+  "description": "A customizable bingo-style progress board component for React",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "react-binjo": "./dist/cli/generate-csv.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && tsc cli/generate-csv.ts --outDir dist/cli --module nodenext --moduleResolution nodenext",
+    "build:cli": "tsc cli/generate-csv.ts --outDir dist/cli --module nodenext --moduleResolution nodenext",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "generate": "npx tsx cli/generate-csv.ts"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.1",
+    "papaparse": "^5.4.1",
+    "react-chartjs-2": "^5.2.0",
+    "styled-components": "^6.1.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/papaparse": "^5.3.14",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "vite-plugin-dts": "^3.7.2"
+  },
+  "keywords": [
+    "react",
+    "bingo",
+    "progress",
+    "tracker",
+    "goals",
+    "chart",
+    "pie-chart"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
