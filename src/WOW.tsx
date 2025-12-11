@@ -4,8 +4,7 @@ import Confetti from "react-confetti";
 import type { WOWProps, WOWOption, WOWConfettiConfig, WOWPointerConfig, WOWBorderConfig } from "./types";
 
 const DEFAULT_COLORS = {
-  primary: "#4cbba4",
-  secondary: "#88be74",
+  segmentColors: ["#4cbba4", "#88be74"],
   text: "#ffffff",
   outerBorder: "#ffffff",
 };
@@ -33,7 +32,7 @@ const DEFAULT_BORDER: WOWBorderConfig = {
 
 function normalizeOptions(
   options: string[] | WOWOption[],
-  colors: { primary: string; secondary: string; text: string }
+  colors: { segmentColors: string[]; text: string }
 ) {
   return options.map((opt, index) => {
     const label = typeof opt === "string" ? opt : opt.label;
@@ -41,11 +40,13 @@ function normalizeOptions(
       .padEnd(label.length + 3, " ")
       .padStart(label.length + 6, " ");
 
+    const defaultBackgroundColor = colors.segmentColors[index % colors.segmentColors.length];
+
     if (typeof opt === "string") {
       return {
         option: paddedLabel,
         style: {
-          backgroundColor: index % 2 === 0 ? colors.primary : colors.secondary,
+          backgroundColor: defaultBackgroundColor,
           textColor: colors.text,
         },
       };
@@ -54,7 +55,7 @@ function normalizeOptions(
     return {
       option: paddedLabel,
       style: {
-        backgroundColor: opt.backgroundColor ?? (index % 2 === 0 ? colors.primary : colors.secondary),
+        backgroundColor: opt.backgroundColor ?? defaultBackgroundColor,
         textColor: opt.textColor ?? colors.text,
       },
     };
@@ -103,7 +104,12 @@ export const WOW: React.FC<WOWProps> = ({
     height: typeof window !== "undefined" ? window.innerHeight : 768,
   };
 
-  const mergedColors = { ...DEFAULT_COLORS, ...colors };
+  const mergedColors = {
+    segmentColors: colors?.segmentColors ?? DEFAULT_COLORS.segmentColors,
+    text: colors?.text ?? DEFAULT_COLORS.text,
+    outerBorder: colors?.outerBorder ?? DEFAULT_COLORS.outerBorder,
+  };
+  
   const confettiConfig = getConfettiConfig(confetti);
   const pointerConfig = getPointerConfig(pointer);
   const borderConfig = getBorderConfig(border);
@@ -176,7 +182,7 @@ export const WOW: React.FC<WOWProps> = ({
           mustStartSpinning={mustSpin}
           prizeNumber={prizeNumber}
           data={data}
-          backgroundColors={[mergedColors.primary, mergedColors.secondary]}
+          backgroundColors={mergedColors.segmentColors}
           textColors={[mergedColors.text]}
           fontFamily={fontFamily}
           fontSize={fontSize}

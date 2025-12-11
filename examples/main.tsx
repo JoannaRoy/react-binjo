@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BasicExample, CustomColorsExample } from "./BasicUsage";
-import { BasicWOWExample, CustomWOWExample  } from "./WOWExample";
+import { BasicWOWExample, ColorListWOWExample, CustomWOWExample  } from "./WOWExample";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -10,6 +10,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <CustomColorsExample />
       <BasicWOWExample />
       <CustomWOWExample />
+      <ColorListWOWExample />
     </div>
   </React.StrictMode>
 );

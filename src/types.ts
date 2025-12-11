@@ -47,8 +47,7 @@ export interface WOWOption {
 }
 
 export interface WOWColors {
-  primary?: string;
-  secondary?: string;
+  segmentColors?: string[];
   text?: string;
   outerBorder?: string;
 }

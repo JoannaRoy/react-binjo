@@ -42,8 +42,7 @@ export function CustomWOWExample() {
       options={customOptions}
       title="Prize Wheel"
       colors={{
-        primary: "#8b5cf6",
-        secondary: "#ec4899",
+        segmentColors: ["#8b5cf6", "#ec4899"],
         text: "#ffffff",
         outerBorder: "#000000",
       }}
@@ -74,6 +73,64 @@ export function MinimalWOWExample() {
       showTitle={false}
       confetti={false}
       onSpinEnd={(index, label) => console.log(`Won index ${index}: ${label}`)}
+    />
+  );
+}
+
+export function CSSVariablesWOWExample() {
+  return (
+    <div style={{ 
+      "--wheel-color-1": "#4cbba4",
+      "--wheel-color-2": "#88be74",
+      "--wheel-text": "#ffffff",
+      "--wheel-border": "#000000"
+    } as React.CSSProperties}>
+      <WOW
+        options={prizeOptions}
+        title="Spin with CSS Variables!"
+        colors={{
+          segmentColors: ["var(--wheel-color-1)", "var(--wheel-color-2)"],
+          text: "var(--wheel-text)",
+          outerBorder: "var(--wheel-border)",
+        }}
+        onSpinEnd={(index, label) => {
+          console.log(`Won: ${label} (index ${index})`);
+        }}
+      />
+    </div>
+  );
+}
+
+export function ColorListWOWExample() {
+  return (
+    <WOW
+      options={["Prize 1", "Prize 2", "Prize 3", "Prize 4", "Prize 5", "Prize 6", "Prize 7", "Prize 8"]}
+      title="Rainbow Wheel!"
+      colors={{
+        segmentColors: ["#ff6b6b", "#4ecdc4", "#45b7d1", "#f7b731", "#5f27cd", "#00d2d3"],
+        text: "#ffffff",
+        outerBorder: "#2c3e50",
+      }}
+      onSpinEnd={(index, label) => {
+        console.log(`Won: ${label} (index ${index})`);
+      }}
+    />
+  );
+}
+
+export function TwoColorRotationExample() {
+  return (
+    <WOW
+      options={prizeOptions}
+      title="Two Color Rotation"
+      colors={{
+        segmentColors: ["#e74c3c", "#3498db"],
+        text: "#ffffff",
+      }}
+      confetti={false}
+      onSpinEnd={(index, label) => {
+        console.log(`Won: ${label} (index ${index})`);
+      }}
     />
   );
 }
