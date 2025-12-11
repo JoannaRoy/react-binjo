@@ -12,6 +12,8 @@ const DEFAULT_COLORS = {
   cellEven: "#d8b4fe",
   cellOdd: "#93c5fd",
   centerCell: "linear-gradient(135deg, #86efac, #c084fc)",
+  titleText: "#1a1a1a",
+  cellText: "#1a1a1a",
 };
 
 const DEFAULT_FONTS: BinjoFonts = {
@@ -60,19 +62,19 @@ const HeaderRow = styled.div`
   }
 `;
 
-const HeaderLetter = styled.div<{ $fontFamily: string }>`
+const HeaderLetter = styled.div<{ $fontFamily: string; $textColor: string }>`
   font-family: ${(props) => props.$fontFamily};
   font-weight: 600;
-  color: #1a1a1a;
+  color: ${(props) => props.$textColor};
   text-align: center;
   font-size: clamp(1.8rem, 7vw, 3rem);
   letter-spacing: 0.02em;
 `;
 
-const Title = styled.h1<{ $fontFamily: string }>`
+const Title = styled.h1<{ $fontFamily: string; $textColor: string }>`
   font-family: ${(props) => props.$fontFamily};
   font-weight: 600;
-  color: #1a1a1a;
+  color: ${(props) => props.$textColor};
   text-align: center;
   font-size: clamp(1.8rem, 7vw, 3rem);
   letter-spacing: 0.05em;
@@ -90,12 +92,12 @@ const Grid = styled.div`
   }
 `;
 
-const Cell = styled.div<{ $background: string; $isCenter: boolean; $fontFamily: string }>`
+const Cell = styled.div<{ $background: string; $isCenter: boolean; $fontFamily: string; $textColor: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #1a1a1a;
+  color: ${(props) => props.$textColor};
   text-align: center;
   font-size: 0.625rem;
   font-weight: 600;
@@ -220,11 +222,11 @@ export function BinjoBoard({
           isFiveLetters ? (
             <HeaderRow>
               {title.split("").map((letter, i) => (
-                <HeaderLetter key={i} $fontFamily={fonts.title!}>{letter}</HeaderLetter>
+                <HeaderLetter key={i} $fontFamily={fonts.title!} $textColor={colors.titleText!}>{letter}</HeaderLetter>
               ))}
             </HeaderRow>
           ) : (
-            <Title $fontFamily={fonts.title!}>{title}</Title>
+            <Title $fontFamily={fonts.title!} $textColor={colors.titleText!}>{title}</Title>
           )
         )}
 
@@ -235,6 +237,7 @@ export function BinjoBoard({
               $background={getCellBackground(index)}
               $isCenter={index === centerIndex}
               $fontFamily={fonts.cell!}
+              $textColor={colors.cellText!}
               onMouseEnter={() => {
                 setHoverTimestamp(Date.now());
                 setHoveredItem(item.item);

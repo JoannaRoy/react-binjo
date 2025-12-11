@@ -15,6 +15,8 @@ export interface BinjoColors {
   cellEven?: string;
   cellOdd?: string;
   centerCell?: string;
+  titleText?: string;
+  cellText?: string;
 }
 
 export interface BinjoFonts {

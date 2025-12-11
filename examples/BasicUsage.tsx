@@ -47,3 +47,24 @@ export function CustomColorsExample() {
     />
   );
 }
+
+const darkThemeColors = {
+  completed: "#10b981",
+  planned: "#f59e0b",
+  remaining: "#6366f1",
+  cellEven: "#374151",
+  cellOdd: "#4b5563",
+  centerCell: "linear-gradient(135deg, #1f2937, #374151)",
+  titleText: "#f9fafb",
+  cellText: "#e5e7eb",
+};
+
+export function DarkThemeExample() {
+  return (
+    <BinjoBoard
+      data={data}
+      title="GOALS"
+      colors={darkThemeColors}
+    />
+  );
+}
