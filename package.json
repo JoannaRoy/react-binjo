@@ -1,6 +1,6 @@
 {
   "name": "react-binjo",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Customizable bingo-style progress board and prize wheel components for React",
   "type": "module",
   "main": "./dist/index.cjs",
