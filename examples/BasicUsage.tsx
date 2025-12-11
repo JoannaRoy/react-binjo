@@ -8,7 +8,10 @@ export function BasicExample() {
     <BinjoBoard
       data={data}
       title="BINJO"
-      onItemClick={(item) => console.log("Clicked:", item.item)}
+      fonts={{
+        title: "'Fredoka', system-ui, sans-serif",
+        cell: "'Inter', system-ui, sans-serif",
+      }}
     />
   );
 }
@@ -20,6 +23,11 @@ const customColors = {
   cellEven: "#fecaca",
   cellOdd: "#bfdbfe",
   centerCell: "linear-gradient(135deg, #fcd34d, #f87171)",
+};
+
+const customFonts = {
+  title: "'Bangers', cursive",
+  cell: "'Poppins', sans-serif",
 };
 
 const CustomStar = () => (
@@ -34,6 +42,7 @@ export function CustomColorsExample() {
       data={data}
       title="TRAIL"
       colors={customColors}
+      fonts={customFonts}
       starIcon={<CustomStar />}
     />
   );

@@ -17,6 +17,11 @@ export interface BinjoColors {
   centerCell?: string;
 }
 
+export interface BinjoFonts {
+  title?: string;
+  cell?: string;
+}
+
 export interface BinjoBoardProps {
   data: BinjoItem[];
   colors?: BinjoColors;
@@ -25,6 +30,7 @@ export interface BinjoBoardProps {
   showLegend?: boolean;
   onItemClick?: (item: BinjoItem, index: number) => void;
   className?: string;
+  fonts?: BinjoFonts;
 }
 
 export interface CsvRow {

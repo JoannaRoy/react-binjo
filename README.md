@@ -121,6 +121,7 @@ A template is included at `templates/binjo-template.csv`.
 | `data` | `BinjoItem[]` | **required** | Array of 25 progress items |
 | `title` | `string` | `"BINJO"` | Title above the board |
 | `colors` | `BinjoColors` | see below | Custom color scheme |
+| `fonts` | `BinjoFonts` | see below | Custom font families |
 | `starIcon` | `ReactNode \| string` | star SVG | Icon for 100% complete items |
 | `className` | `string` | - | Additional CSS class |
 
@@ -148,6 +149,15 @@ interface BinjoColors {
   cellEven?: string;    // Even cell background (default: "#d8b4fe")
   cellOdd?: string;     // Odd cell background (default: "#93c5fd")
   centerCell?: string;  // Center cell (default: gradient)
+}
+```
+
+### BinjoFonts
+
+```ts
+interface BinjoFonts {
+  title?: string;  // Title/header font (default: "'Fredoka', system-ui, sans-serif")
+  cell?: string;   // Cell content font (default: "system-ui, -apple-system, sans-serif")
 }
 ```
 
@@ -192,6 +202,24 @@ interface BinjoColors {
 
 When the title is exactly 5 characters, each letter appears above its column.
 
+### Custom Fonts
+
+```tsx
+<BinjoBoard
+  data={data}
+  fonts={{
+    title: "'Bangers', cursive",
+    cell: "'Poppins', sans-serif",
+  }}
+/>
+```
+
+**Note:** Web fonts (like Google Fonts) must be loaded separately in your HTML or app:
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+```
+
 ---
 
 ## Utilities
@@ -233,7 +261,7 @@ The package exports:
 - `Tooltip` - Tooltip component
 - `parseBinjoCsv` - CSV parser utility
 - `generateCsvTemplate` - CSV template generator
-- Types: `BinjoItem`, `BinjoColors`, `BinjoBoardProps`, `CsvRow`
+- Types: `BinjoItem`, `BinjoColors`, `BinjoFonts`, `BinjoBoardProps`, `CsvRow`
 
 ---
 

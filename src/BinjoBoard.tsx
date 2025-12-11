@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { PieChart } from "./PieChart";
 import { Tooltip } from "./Tooltip";
-import type { BinjoBoardProps, BinjoItem } from "./types";
+import type { BinjoBoardProps, BinjoItem, BinjoFonts } from "./types";
 
 
 const DEFAULT_COLORS = {
@@ -14,13 +14,18 @@ const DEFAULT_COLORS = {
   centerCell: "linear-gradient(135deg, #86efac, #c084fc)",
 };
 
-const BoardContainer = styled.div`
+const DEFAULT_FONTS: BinjoFonts = {
+  title: "'Fredoka', system-ui, sans-serif",
+  cell: "system-ui, -apple-system, sans-serif",
+};
+
+const BoardContainer = styled.div<{ $fontFamily: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: ${(props) => props.$fontFamily};
 `;
 
 const BoardBox = styled.div`
@@ -55,8 +60,8 @@ const HeaderRow = styled.div`
   }
 `;
 
-const HeaderLetter = styled.div`
-  font-family: 'Fredoka', system-ui, sans-serif;
+const HeaderLetter = styled.div<{ $fontFamily: string }>`
+  font-family: ${(props) => props.$fontFamily};
   font-weight: 600;
   color: #1a1a1a;
   text-align: center;
@@ -64,8 +69,8 @@ const HeaderLetter = styled.div`
   letter-spacing: 0.02em;
 `;
 
-const Title = styled.h1`
-  font-family: 'Fredoka', system-ui, sans-serif;
+const Title = styled.h1<{ $fontFamily: string }>`
+  font-family: ${(props) => props.$fontFamily};
   font-weight: 600;
   color: #1a1a1a;
   text-align: center;
@@ -178,11 +183,13 @@ export function BinjoBoard({
   title = "BINJO",
   starIcon,
   className,
+  fonts: userFonts,
 }: BinjoBoardProps) {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [hoverTimestamp, setHoverTimestamp] = useState(0);
 
   const colors = { ...DEFAULT_COLORS, ...userColors };
+  const fonts = { ...DEFAULT_FONTS, ...userFonts };
   const centerIndex = 12;
 
   const normalizedData: BinjoItem[] = data.map((item) => ({
@@ -206,17 +213,17 @@ export function BinjoBoard({
   const isFiveLetters = title.length === 5;
 
   return (
-    <BoardContainer className={className}>
+    <BoardContainer className={className} $fontFamily={fonts.cell!}>
       <BoardBox>
         {title && (
           isFiveLetters ? (
             <HeaderRow>
               {title.split("").map((letter, i) => (
-                <HeaderLetter key={i}>{letter}</HeaderLetter>
+                <HeaderLetter key={i} $fontFamily={fonts.title!}>{letter}</HeaderLetter>
               ))}
             </HeaderRow>
           ) : (
-            <Title>{title}</Title>
+            <Title $fontFamily={fonts.title!}>{title}</Title>
           )
         )}
 
