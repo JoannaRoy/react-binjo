@@ -54,9 +54,10 @@ const darkThemeColors = {
   remaining: "#6366f1",
   cellEven: "#374151",
   cellOdd: "#4b5563",
-  centerCell: "linear-gradient(135deg, #1f2937, #374151)",
+  centerCell: "linear-gradient(135deg, #fbbf24, #f59e0b)",
   titleText: "#f9fafb",
   cellText: "#e5e7eb",
+  centerCellText: "#1f2937",
 };
 
 export function DarkThemeExample() {

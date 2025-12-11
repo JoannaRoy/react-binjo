@@ -14,6 +14,7 @@ const DEFAULT_COLORS = {
   centerCell: "linear-gradient(135deg, #86efac, #c084fc)",
   titleText: "#1a1a1a",
   cellText: "#1a1a1a",
+  centerCellText: "#1a1a1a",
 };
 
 const DEFAULT_FONTS: BinjoFonts = {
@@ -237,7 +238,7 @@ export function BinjoBoard({
               $background={getCellBackground(index)}
               $isCenter={index === centerIndex}
               $fontFamily={fonts.cell!}
-              $textColor={colors.cellText!}
+              $textColor={index === centerIndex ? colors.centerCellText! : colors.cellText!}
               onMouseEnter={() => {
                 setHoverTimestamp(Date.now());
                 setHoveredItem(item.item);
