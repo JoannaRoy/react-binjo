@@ -90,7 +90,7 @@ const Grid = styled.div`
   }
 `;
 
-const Cell = styled.div<{ $background: string; $isCenter: boolean }>`
+const Cell = styled.div<{ $background: string; $isCenter: boolean; $fontFamily: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -107,6 +107,7 @@ const Cell = styled.div<{ $background: string; $isCenter: boolean }>`
   cursor: pointer;
   overflow: visible;
   background: ${(props) => props.$background};
+  font-family: ${(props) => props.$fontFamily};
   ${(props) => props.$isCenter && "font-weight: bold; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);"}
 
   @media (min-width: 768px) {
@@ -233,6 +234,7 @@ export function BinjoBoard({
               key={index}
               $background={getCellBackground(index)}
               $isCenter={index === centerIndex}
+              $fontFamily={fonts.cell!}
               onMouseEnter={() => {
                 setHoverTimestamp(Date.now());
                 setHoveredItem(item.item);
