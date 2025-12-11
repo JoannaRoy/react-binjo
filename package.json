@@ -1,7 +1,7 @@
 {
   "name": "react-binjo",
   "version": "1.0.4",
-  "description": "A customizable bingo-style progress board component for React",
+  "description": "Customizable bingo-style progress board and prize wheel components for React",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -37,6 +37,8 @@
     "chart.js": "^4.4.1",
     "papaparse": "^5.4.1",
     "react-chartjs-2": "^5.2.0",
+    "react-confetti": "^6.1.0",
+    "react-custom-roulette": "^1.4.1",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
@@ -59,7 +61,11 @@
     "tracker",
     "goals",
     "chart",
-    "pie-chart"
+    "pie-chart",
+    "wheel",
+    "roulette",
+    "spin",
+    "prize"
   ],
   "author": "",
   "license": "MIT",

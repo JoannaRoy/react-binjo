@@ -40,3 +40,56 @@ export interface CsvRow {
   Annotation?: string;
 }
 
+export interface WOWOption {
+  label: string;
+  backgroundColor?: string;
+  textColor?: string;
+}
+
+export interface WOWColors {
+  primary?: string;
+  secondary?: string;
+  text?: string;
+  outerBorder?: string;
+}
+
+export interface WOWBorderConfig {
+  outerBorderWidth?: number;
+  radiusLineWidth?: number;
+  radiusLineColor?: string;
+}
+
+export interface WOWConfettiConfig {
+  enabled?: boolean;
+  numberOfPieces?: number;
+  gravity?: number;
+  initialVelocityY?: number;
+  recycle?: boolean;
+}
+
+export interface WOWPointerConfig {
+  src?: string;
+  rotation?: number;
+  width?: number;
+  mobileWidth?: number;
+  color?: string;
+}
+
+export interface WOWProps {
+  options: string[] | WOWOption[];
+  colors?: WOWColors;
+  border?: WOWBorderConfig;
+  title?: string;
+  showTitle?: boolean;
+  spinDuration?: number;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: number;
+  confetti?: WOWConfettiConfig | boolean;
+  pointer?: WOWPointerConfig;
+  onSpinStart?: (prizeIndex: number) => void;
+  onSpinEnd?: (prizeIndex: number, prizeLabel: string) => void;
+  className?: string;
+  mobileBreakpoint?: number;
+}
+
