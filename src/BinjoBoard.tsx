@@ -32,34 +32,41 @@ const BoardContainer = styled.div<{ $fontFamily: string }>`
 `;
 
 const BoardBox = styled.div`
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 1rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
   width: 100%;
-  max-width: 34rem;
+  max-width: 100%;
   margin: 0 auto;
   overflow: visible;
 
-  @media (max-width: 640px) {
-    padding: 0.5rem;
+  @media (min-width: 768px) {
+    padding: 1rem;
+    max-width: 34rem;
   }
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.2);
+
+    @media (min-width: 768px) {
+      transform: scale(1.05);
+    }
   }
 `;
 
 const HeaderRow = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, minmax(4rem, 6rem));
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
 
-  @media (max-width: 640px) {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0.25rem;
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(5, minmax(5rem, 6rem));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -68,7 +75,7 @@ const HeaderLetter = styled.div<{ $fontFamily: string; $textColor: string }>`
   font-weight: 600;
   color: ${(props) => props.$textColor};
   text-align: center;
-  font-size: clamp(1.8rem, 7vw, 3rem);
+  font-size: clamp(1.5rem, 5vw, 3rem);
   letter-spacing: 0.02em;
 `;
 
@@ -77,19 +84,24 @@ const Title = styled.h1<{ $fontFamily: string; $textColor: string }>`
   font-weight: 600;
   color: ${(props) => props.$textColor};
   text-align: center;
-  font-size: clamp(1.8rem, 7vw, 3rem);
+  font-size: clamp(1.5rem, 5vw, 3rem);
   letter-spacing: 0.05em;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.5rem 0;
+
+  @media (min-width: 768px) {
+    margin: 0 0 1rem 0;
+  }
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, minmax(4rem, 6rem));
-  gap: 0.5rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.25rem;
+  width: 100%;
 
-  @media (max-width: 640px) {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0.25rem;
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(5, minmax(5rem, 6rem));
+    gap: 0.5rem;
   }
 `;
 
@@ -100,34 +112,49 @@ const Cell = styled.div<{ $background: string; $isCenter: boolean; $fontFamily: 
   justify-content: center;
   color: ${(props) => props.$textColor};
   text-align: center;
-  font-size: 0.625rem;
+  font-size: clamp(0.5rem, 2vw, 0.625rem);
   font-weight: 600;
   border-radius: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.125rem;
   position: relative;
-  width: 4rem;
-  height: 4rem;
+  width: 100%;
+  height: 100%;
+  min-height: 3.5rem;
   cursor: pointer;
-  overflow: visible;
+  overflow: hidden;
   background: ${(props) => props.$background};
   font-family: ${(props) => props.$fontFamily};
   ${(props) => props.$isCenter && "font-weight: bold; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);"}
 
   @media (min-width: 768px) {
-    width: 6rem;
-    height: 6rem;
     font-size: 0.75rem;
+    padding: 0.5rem;
+    min-height: 6rem;
   }
 `;
 
-const ItemLabel = styled.span`
+const ItemLabel = styled.span<{ $textLength: number }>`
   opacity: 1;
   z-index: 10;
-  font-size: 0.625rem;
-  margin-bottom: 0.25rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-width: 100%;
+  line-height: 1.1;
+  font-size: ${(props) => {
+    if (props.$textLength > 20) return 'clamp(0.4rem, 1.5vw, 0.5rem)';
+    if (props.$textLength > 15) return 'clamp(0.45rem, 1.7vw, 0.55rem)';
+    if (props.$textLength > 10) return 'clamp(0.5rem, 1.8vw, 0.6rem)';
+    return 'inherit';
+  }};
 
   @media (min-width: 768px) {
-    font-size: 0.75rem;
+    font-size: ${(props) => {
+      if (props.$textLength > 25) return '0.6rem';
+      if (props.$textLength > 20) return '0.65rem';
+      if (props.$textLength > 15) return '0.7rem';
+      return 'inherit';
+    }};
   }
 `;
 
@@ -245,7 +272,7 @@ export function BinjoBoard({
               }}
               onMouseLeave={() => setHoveredItem(null)}
             >
-              <ItemLabel>{item.item}</ItemLabel>
+              <ItemLabel $textLength={item.item.length}>{item.item}</ItemLabel>
 
               {item.completed === 100 && <StarOverlay>{renderStar()}</StarOverlay>}
 
