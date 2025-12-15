@@ -21,7 +21,7 @@ export function parseBinjoCsv(csvString: string): BinjoItem[] {
 }
 
 export function generateCsvTemplate(items: string[] = []): string {
-  const header = "Item,Planned,Completed,Notes";
+  const header = "Item,Planned,Completed,Annotation";
   const defaultItems = [
     "Goal 1", "Goal 2", "Goal 3", "Goal 4", "Goal 5",
     "Goal 6", "Goal 7", "Goal 8", "Goal 9", "Goal 10",

@@ -115,7 +115,7 @@ const Cell = styled.div<{ $background: string; $isCenter: boolean; $fontFamily: 
   font-size: clamp(0.5rem, 2vw, 0.625rem);
   font-weight: 600;
   border-radius: 0.5rem;
-  padding: 0.125rem;
+  padding: 0.2rem;
   position: relative;
   width: 100%;
   height: 100%;
@@ -128,7 +128,7 @@ const Cell = styled.div<{ $background: string; $isCenter: boolean; $fontFamily: 
 
   @media (min-width: 768px) {
     font-size: 0.75rem;
-    padding: 0.5rem;
+    padding: 0.4rem;
     min-height: 6rem;
   }
 `;
@@ -138,21 +138,16 @@ const ItemLabel = styled.span<{ $textLength: number }>`
   z-index: 10;
   word-break: break-word;
   overflow-wrap: break-word;
-  hyphens: auto;
-  max-width: 100%;
-  line-height: 1.1;
-  font-size: ${(props) => {
-    if (props.$textLength > 20) return 'clamp(0.4rem, 1.5vw, 0.5rem)';
-    if (props.$textLength > 15) return 'clamp(0.45rem, 1.7vw, 0.55rem)';
-    if (props.$textLength > 10) return 'clamp(0.5rem, 1.8vw, 0.6rem)';
-    return 'inherit';
-  }};
+  max-width: 95%;
+  max-height: 95%;
+  line-height: 1;
+  display: block;
 
   @media (min-width: 768px) {
     font-size: ${(props) => {
-      if (props.$textLength > 25) return '0.6rem';
-      if (props.$textLength > 20) return '0.65rem';
-      if (props.$textLength > 15) return '0.7rem';
+      if (props.$textLength > 45) return '.7rem';
+      if (props.$textLength > 35) return '.75rem';
+      if (props.$textLength > 25) return '.8rem';
       return 'inherit';
     }};
   }
@@ -171,7 +166,9 @@ const CellTooltip = styled(Tooltip)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 25;
+  
+  word-break: break-word;
+  overflow-wrap: break-word;
 `;
 
 const DefaultStar = styled.svg`
@@ -216,7 +213,7 @@ export function BinjoBoard({
   className,
   fonts: userFonts,
 }: BinjoBoardProps) {
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<BinjoItem | null>(null);
   const [hoverTimestamp, setHoverTimestamp] = useState(0);
 
   const colors = { ...DEFAULT_COLORS, ...userColors };
@@ -268,7 +265,7 @@ export function BinjoBoard({
               $textColor={index === centerIndex ? colors.centerCellText! : colors.cellText!}
               onMouseEnter={() => {
                 setHoverTimestamp(Date.now());
-                setHoveredItem(item.item);
+                setHoveredItem(item);
               }}
               onMouseLeave={() => setHoveredItem(null)}
             >
@@ -276,11 +273,11 @@ export function BinjoBoard({
 
               {item.completed === 100 && <StarOverlay>{renderStar()}</StarOverlay>}
 
-              {item.completed === 100 && hoveredItem === item.item && item.annotation && (
+              {item.completed === 100 && hoveredItem?.item === item.item && item.annotation && (
                 <CellTooltip>{item.annotation}</CellTooltip>
               )}
 
-              {item.completed !== 100 && hoveredItem === item.item && (
+              {item.completed !== 100 && hoveredItem?.item === item.item && (
                 <ChartOverlay key={`chart-${item.item}-${hoverTimestamp}`} $isMobile={false}>
                   <PieChart
                     completed={item.completed}
