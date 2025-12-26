@@ -1,6 +1,26 @@
 import Papa from "papaparse";
 import type { BinjoItem, CsvRow } from "../types";
 
+function parsePercentValue(input: string | undefined): number {
+  const raw = (input ?? "").trim();
+  if (!raw) return 0;
+
+  if (raw.includes("/")) {
+    const parts = raw.split("/").map((p) => p.trim());
+    if (parts.length !== 2 || !parts[0] || !parts[1]) return 0;
+
+    const numerator = Number(parts[0]);
+    const denominator = Number(parts[1]);
+    if (!Number.isFinite(numerator) || !Number.isFinite(denominator) || denominator === 0) return 0;
+
+    const percent = (numerator / denominator) * 100;
+    return Math.max(0, Math.min(100, percent));
+  }
+
+  const value = parseFloat(raw);
+  return Number.isFinite(value) ? value : 0;
+}
+
 export function parseBinjoCsv(csvString: string): BinjoItem[] {
   const result = Papa.parse<CsvRow>(csvString, {
     header: true,
@@ -8,8 +28,8 @@ export function parseBinjoCsv(csvString: string): BinjoItem[] {
   });
 
   return result.data.map((row) => {
-    const planned = parseFloat(row.Planned) || 0;
-    const completed = parseFloat(row.Completed) || 0;
+    const planned = parsePercentValue(row.Planned);
+    const completed = parsePercentValue(row.Completed);
     return {
       item: row.Item,
       planned,

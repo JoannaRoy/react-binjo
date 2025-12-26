@@ -102,8 +102,8 @@ Your CSV needs these columns:
 | Column | Type | Description |
 |--------|------|-------------|
 | `Item` | string | Name of the goal |
-| `Planned` | number | Percentage planned (0-100) |
-| `Completed` | number | Percentage completed (0-100) |
+| `Planned` | number \| fraction | Percentage planned (0-100), or a fraction like `1/4` (treated as 25%) |
+| `Completed` | number \| fraction | Percentage completed (0-100), or a fraction like `2/3` (treated as ~66.67%) |
 | `Annotation` | string | Optional note (shown on hover for completed items) |
 
 Example:
