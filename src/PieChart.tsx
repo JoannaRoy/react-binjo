@@ -44,7 +44,17 @@ export function PieChart({ completed, planned, remaining, colors }: PieChartProp
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { display: false },
+            legend: { 
+              display: true,
+              position: "bottom",
+              labels: {
+                boxWidth: 12,
+                padding: 8,
+                font: {
+                  size: 10,
+                },
+              },
+            },
             tooltip: {
               enabled: false,
               position: "nearest",

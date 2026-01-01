@@ -105,7 +105,7 @@ const Grid = styled.div`
   }
 `;
 
-const Cell = styled.div<{ $background: string; $isCenter: boolean; $fontFamily: string; $textColor: string }>`
+const Cell = styled.div<{ $background: string; $isCenter: boolean; $fontFamily: string; $textColor: string; $showChart: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -121,7 +121,7 @@ const Cell = styled.div<{ $background: string; $isCenter: boolean; $fontFamily: 
   height: 100%;
   min-height: 3.5rem;
   cursor: pointer;
-  overflow: hidden;
+  overflow: ${(props) => props.$showChart ? "visible" : "hidden"};
   background: ${(props) => props.$background};
   font-family: ${(props) => props.$fontFamily};
   ${(props) => props.$isCenter && "font-weight: bold; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);"}
@@ -215,6 +215,8 @@ export function BinjoBoard({
 }: BinjoBoardProps) {
   const [hoveredItem, setHoveredItem] = useState<BinjoItem | null>(null);
   const [hoverTimestamp, setHoverTimestamp] = useState(0);
+  const [clickedItem, setClickedItem] = useState<BinjoItem | null>(null);
+  const [clickTimestamp, setClickTimestamp] = useState(0);
 
   const colors = { ...DEFAULT_COLORS, ...userColors };
   const fonts = { ...DEFAULT_FONTS, ...userFonts };
@@ -256,19 +258,32 @@ export function BinjoBoard({
         )}
 
         <Grid>
-          {normalizedData.slice(0, 25).map((item, index) => (
-            <Cell
-              key={index}
-              $background={getCellBackground(index)}
-              $isCenter={index === centerIndex}
-              $fontFamily={fonts.cell!}
-              $textColor={index === centerIndex ? colors.centerCellText! : colors.cellText!}
-              onMouseEnter={() => {
-                setHoverTimestamp(Date.now());
-                setHoveredItem(item);
-              }}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
+          {normalizedData.slice(0, 25).map((item, index) => {
+            const showOverflow = 
+              (item.completed !== 100 && (hoveredItem?.item === item.item || clickedItem?.item === item.item)) ||
+              (item.completed === 100 && hoveredItem?.item === item.item && !!item.annotation);
+            return (
+              <Cell
+                key={index}
+                $background={getCellBackground(index)}
+                $isCenter={index === centerIndex}
+                $fontFamily={fonts.cell!}
+                $textColor={index === centerIndex ? colors.centerCellText! : colors.cellText!}
+                $showChart={showOverflow}
+                onMouseEnter={() => {
+                  setHoverTimestamp(Date.now());
+                  setHoveredItem(item);
+                }}
+                onMouseLeave={() => setHoveredItem(null)}
+                onClick={() => {
+                  if (clickedItem?.item === item.item) {
+                    setClickedItem(null);
+                  } else {
+                    setClickTimestamp(Date.now());
+                    setClickedItem(item);
+                  }
+                }}
+              >
               <ItemLabel $textLength={item.item.length}>{item.item}</ItemLabel>
 
               {item.completed === 100 && <StarOverlay>{renderStar()}</StarOverlay>}
@@ -278,7 +293,18 @@ export function BinjoBoard({
               )}
 
               {item.completed !== 100 && hoveredItem?.item === item.item && (
-                <ChartOverlay key={`chart-${item.item}-${hoverTimestamp}`} $isMobile={false}>
+                <ChartOverlay key={`chart-hover-${item.item}-${hoverTimestamp}`} $isMobile={false}>
+                  <PieChart
+                    completed={item.completed}
+                    planned={item.planned}
+                    remaining={item.remaining!}
+                    colors={{ completed: colors.completed, planned: colors.planned, remaining: colors.remaining }}
+                  />
+                </ChartOverlay>
+              )}
+
+              {item.completed !== 100 && clickedItem?.item === item.item && (
+                <ChartOverlay key={`chart-click-${item.item}-${clickTimestamp}`} $isMobile={true}>
                   <PieChart
                     completed={item.completed}
                     planned={item.planned}
@@ -288,7 +314,8 @@ export function BinjoBoard({
                 </ChartOverlay>
               )}
             </Cell>
-          ))}
+            );
+          })}
         </Grid>
       </BoardBox>
     </BoardContainer>

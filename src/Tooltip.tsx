@@ -9,7 +9,10 @@ export const Tooltip = styled.div`
   border-radius: 6px;
   font-size: 12px;
   font-family: monospace;
-  white-space: nowrap;
+  white-space: normal;
+  min-width: 150px;
+  width: max-content;
+  max-width: 300px;
   z-index: 9999;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   pointer-events: none;
